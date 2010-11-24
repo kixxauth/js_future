@@ -30,6 +30,8 @@
 
 /**
  * @module namespaced_events
+ * @exports makeEmitter
+ * @exports makeNotifier
  */
 module.declare(function (require, exports, module) {
 'use strict';
