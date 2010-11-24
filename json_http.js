@@ -31,7 +31,7 @@
 var deps = [
     'json'
   , 'jquery'
-  , 'q'
+  , 'q/q'
 ];
 
 /**
@@ -42,7 +42,7 @@ module.declare(deps, function (require, exports, module) {
 
 var JSON = typeof JSON === 'undefined' ? require('json').JSON : JSON
   , jQuery = require('jquery').jQuery
-  , q = require('q').q
+  , q      = require('q/q')
   ;
 
 /**
