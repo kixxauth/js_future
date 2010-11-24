@@ -33,7 +33,7 @@
  * @exports makeEmitter
  * @exports makeNotifier
  */
-module.declare(function (require, exports, module) {
+module.declare(['broadcaster'], function (require, exports, module) {
 'use strict';
 
 var has = Object.prototype.hasOwnProperty
