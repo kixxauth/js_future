@@ -216,6 +216,19 @@ function append(name, params) {
 }
 
 /**
+ * @exports url as url
+ * Set or reset the URL for this RPC service.
+ */
+function url(value) {
+    if (typeof value !== 'string') {
+        throw new TypeError('typeof url ['+
+                            toString.call(value) +'] !== "string"');
+    }
+    url_memo = value;
+}
+
+/**
+ * @exports init as init
  * Initialize this RPC service.
  * @param {Object} opts
  * @param {String} opts.url The URL can be changed by subsequest calls to the
@@ -226,10 +239,8 @@ function append(name, params) {
 function init(opts) {
     opts = opts || {};
     current_batch = makeBatchRequest();
+    url(opts.url);
     methods_memo = opts.methods;
-    if (typeof opts.url === 'string') {
-        url_memo = opts.url;
-    }
     return exports;
 }
 
@@ -237,6 +248,7 @@ exports.JsonRPCError = make_JSON_RPC_error;
 exports.beforeSend = beforeSend;
 exports.send = send;
 exports.append = append;
+exports.url = url;
 exports.init = init;
 });
 
