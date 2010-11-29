@@ -36,6 +36,12 @@ var deps = [
 
 /**
  * @module json_rpc
+ * @exports JsonRPCError
+ * @exports beforeSend
+ * @exports send
+ * @exports append
+ * @exports url
+ * @exports init
  */
 module.declare(deps, function (require, exports, module) {
 'use strict';
