@@ -43,7 +43,7 @@ var has = Object.prototype.hasOwnProperty
   , broadcaster = require('broadcaster')
   ;
 
-// Throw an error for an invalid event path/name.
+// Throw an error for an invalid event path-name.
 function path_error(err, path) {
     err.message = 'typeof event name ['+ (typeof path) +'] !== "string"';
     return err;
@@ -56,7 +56,7 @@ function args_error(err, args) {
     return err;
 }
 
-// Call a function for each '.' deliniated part of an even path/name.
+// Call a function for each '.' deliniated part of an event path-name.
 function descend_path(path, fn) {
     while (path) {
         if (fn(path) === false) {
@@ -91,7 +91,8 @@ function make_registrar(registry) {
  * @param {Object} [self] The object to bind to. Defaults to `{}`.
  * @returns {Object} The same object passed in; or `{}`.
  * 
- * The `.emit()` and `.on()` methods are bound to the object.
+ * The `.emit()` and `.on()` methods are bound to the object passed in as the
+ * `self` parameter. If no `self` object is passed in, a new `{}` is created.
  */
 function Emitter(self) {
     self = self || {};
@@ -102,18 +103,18 @@ function Emitter(self) {
     /**
      * Emit event data to registered handlers.
      * @param {String} path Namespaced event name.
-     * @param {Array} data Array of arguments to pass to handlers.
+     * @param {Array} [data] Array of arguments to pass to handlers.
      */
     self.emit = function emit(path, data) {
         if (typeof path !== 'string') {
             throw path_error(new TypeError(), path);
         }
-        if (!isArray(data)) {
+        if (data && !isArray(data)) {
             throw args_error(new TypeError(), data);
         }
         descend_path(path, function (path_part) {
             if (has.call(registry, path_part)) {
-                broadcast(registry[path_part], data);
+                broadcast(registry[path_part], data || []);
             }
         });
     };
@@ -122,7 +123,6 @@ function Emitter(self) {
      * Bind an event handler to this emitter object.
      * @param {String} path Namespaced event name.
      * @param {Function} fn The callback function to call.
-     * This will most likely be your public API to your event emitter feature.
      */
     self.on = make_registrar(registry);
 
@@ -136,7 +136,8 @@ function Emitter(self) {
  * @param {Object} [self] The object to bind to. Defaults to `{}`.
  * @returns {Object} The same object passed in; or `{}`.
  * 
- * The `.emit()` and `.on()` methods are bound to the object.
+ * The `.emit()` and `.on()` methods are bound to the object passed in as the
+ * `self` parameter. If no `self` object is passed in, a new `{}` is created.
  *
  * A Notifier differs from an Emitter in that handlers which have yet to be
  * resistered will be triggered as soon as they are registered and a
@@ -153,7 +154,7 @@ function Notifier(self) {
     /**
      * Notify current and future handlers.
      * @param {String} path Namespaced event name.
-     * @param {Array} data Array of arguments to pass to handlers.
+     * @param {Array} [data] Array of arguments to pass to handlers.
      *
      * Any handlers bound after this method is called will be triggered with
      * the given data. Whenever `.emit()` is repeatedly called with new data,
@@ -164,13 +165,13 @@ function Notifier(self) {
         if (typeof path !== 'string') {
             throw path_error(new TypeError());
         }
-        if (!isArray(data)) {
+        if (data && !isArray(data)) {
             throw args_error(new TypeError(), data);
         }
         descend_path(path, function (path_part) {
             values[path_part] = data;
             if (has.call(registry, path_part)) {
-                broadcast(registry[path_part], data);
+                broadcast(registry[path_part], data || []);
             }
         });
     };
@@ -179,7 +180,6 @@ function Notifier(self) {
      * Register a handler for a notification, even if it has already happened.
      * @param {String} path Namespaced event name.
      * @param {Function} fn The callback function to call.
-     * This will most likely be your public API to your notification feature.
      */
     self.on = function on(path, fn) {
         registrar(path, fn);
