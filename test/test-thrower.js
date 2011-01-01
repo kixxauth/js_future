@@ -1,6 +1,6 @@
 // TODO: real testing
 
-var throw_later = require('../lib/thrower').thrower;
+var throw_later = require('../lib/thrower').raise;
 throw_later();
 throw_later(new Error('Test thrower.'));
 
