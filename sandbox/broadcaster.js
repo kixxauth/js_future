@@ -1,7 +1,12 @@
+// DEPRICATED:
+// The use case for this module is no longer relevant with the latest emitters
+// modules. Work on this module has been abandoned.
+
 /**
  * @fileOverview Broadcast data to a list of functions.
  * @author Kris Walker <kris@kixx.name>
  * @version 0.1
+ * @depricated
  *
  * Copyright (c) 2010 Kris Walker <kris@kixx.name>
  * Some rights are reserved, but licensed to you under the MIT license.
