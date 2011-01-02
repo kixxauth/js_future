@@ -5,3 +5,4 @@
 require('./test/test-enqueue');
 require('./test/test-thrower');
 require('./test/test-frun');
+require('./test/test-namespaced-notifications');
